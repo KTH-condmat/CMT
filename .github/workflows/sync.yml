@@ -1,0 +1,22 @@
+name: Mirror at KTH-condmat
+on:
+  push:
+  schedule:
+    - cron:  "0 6 * * *"
+  workflow_dispatch:
+
+jobs:
+  repo-sync:
+    runs-on: ubuntu-latest
+    environment: CMT-mirror
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+    - name: repo-sync
+      uses: repo-sync/github-sync@v2
+      with:
+        source_repo: "https://DavidAce:${{ secrets.CMT_ACCESS_TOKEN }}@github.com/DavidAce/CMakeTemplate.git"
+        source_branch: "master"
+        destination_branch: "main"
+        github_token: ${{ secrets.CMT_ACCESS_TOKEN }}
